@@ -11,7 +11,10 @@ public class Alien : MonoBehaviour
 
     Breakable breakable;
 
-    const float speed = 4f;
+    const float normalSpeed = 4f;
+    const float panqueSpeed = 5f;
+
+    float speed;
     float timeOfPanqueMode;
 
     int playerNumber = 0;
@@ -31,6 +34,7 @@ public class Alien : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
 
+        speed = normalSpeed;
         originalColor = spriteRenderer.color;
     }
 
@@ -111,6 +115,7 @@ public class Alien : MonoBehaviour
         isAlive = false;
         boxCollider.enabled = false;
         spriteRenderer.sortingOrder = 2;
+        animator.Play("Cry");
     }
 
 
@@ -123,12 +128,7 @@ public class Alien : MonoBehaviour
         if (isAlive)
         {
             isAlive = false;
-            Debug.Log($"player {playerNumber} dances");
-        }
-        //otherwise it lose
-        else
-        {
-            Debug.Log($"player {playerNumber} cries");
+            animator.Play("Dance");
         }
     }
 
@@ -180,6 +180,7 @@ public class Alien : MonoBehaviour
     /// <param name="panqueToEat"></param>
     void EnterPanqueMode(GameObject panqueToEat)
     {
+        speed = panqueSpeed;
         isInPanqueMode = true;
         timeOfPanqueMode = manager.timeOfPanqueMode;
         manager.FindPanqueRoutine();
@@ -191,6 +192,7 @@ public class Alien : MonoBehaviour
     /// </summary>
     void ExitPanqueMode()
     {
+        speed = normalSpeed;
         isInPanqueMode = false;
         spriteRenderer.color = originalColor;
         manager.SetPanqueLocation();

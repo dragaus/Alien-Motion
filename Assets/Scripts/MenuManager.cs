@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
 {
     FirstMenu firstMenu;
     PlayersMenu playersMenu;
+    AudioSource clickManager;
 
     public MainMenuText mainMenuText;
     const string textDirection = "Menu/MainMenu";
@@ -20,6 +21,8 @@ public class MenuManager : MonoBehaviour
         firstMenu = new FirstMenu(panel.Find("First Menu"));
         playersMenu = new PlayersMenu(panel.Find("Players Menu"));
 
+        clickManager = GameObject.Find("Click Manager").GetComponent<AudioSource>();
+
         firstMenu.playButton.GetComponentInChildren<Text>().text = mainMenuText.playText;
         firstMenu.howButton.GetComponentInChildren<Text>().text = mainMenuText.howText;
 
@@ -29,8 +32,10 @@ public class MenuManager : MonoBehaviour
             playersMenu.playersButtons[i].GetComponentInChildren<Text>().text = $"{i + 2} {mainMenuText.playerName}";
         }
 
-        firstMenu.playButton.onClick.AddListener(ShowPlayerMenu);
-        playersMenu.returnButton.onClick.AddListener(ShowFirstMenu);
+        firstMenu.playButton.onClick.AddListener(()=> ButtonFunction(ShowPlayerMenu));
+        playersMenu.returnButton.onClick.AddListener(()=> ButtonFunction(ShowFirstMenu));
+
+
     }
 
     void HideAllMenus()
@@ -49,6 +54,12 @@ public class MenuManager : MonoBehaviour
     {
         HideAllMenus();
         playersMenu.gameObject.SetActive(true);
+    }
+
+    void ButtonFunction(UnityEngine.Events.UnityAction action)
+    {
+        clickManager.Play();
+        action();
     }
 }
 
@@ -84,7 +95,7 @@ class PlayersMenu
         playersButtons = new Button[3];
         for (int i = 0; i < playersButtons.Length; i++)
         {
-            playersButtons[i] = panel.Find($"Players({i})").GetComponent<Button>();
+            playersButtons[i] = panel.Find($"Players ({i})").GetComponent<Button>();
         }
 
         returnButton = panel.Find("Return Button").GetComponent<Button>();

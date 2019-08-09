@@ -52,9 +52,10 @@ public class GameManager : MonoBehaviour
             spawnPositions.Add(alienManager.GetChild(i));
         }
 
-        for (int i = 0; i < alienManager.childCount; i++)
+        for (int i = 0; i < GamePreferences.numberOfPleyers; i++)
         {
             int pos = Random.Range(0, spawnPositions.Count);
+            Debug.Log(pos);
             var positionToStart = spawnPositions[pos];
             var alien = Instantiate(Resources.Load<GameObject>(alienObjectPath),positionToStart).GetComponent<Alien>();
             int x = i;
