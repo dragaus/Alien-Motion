@@ -8,6 +8,8 @@ public class MenuManager : MonoBehaviour
 {
     FirstMenu firstMenu;
     PlayersMenu playersMenu;
+    CredistMenu credistMenu;
+
     AudioSource clickManager;
 
     public MainMenuText mainMenuText;
@@ -15,11 +17,13 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PlayerPrefs.SetString(Keys.languageKey, "es");
         mainMenuText = JsonUtility.FromJson<MainMenuText>(TextAssetLoader.GetCorrectTextAsset(textDirection).text);
 
         var panel = GameObject.Find("Canvas").transform;
         firstMenu = new FirstMenu(panel.Find("First Menu"));
         playersMenu = new PlayersMenu(panel.Find("Players Menu"));
+        credistMenu = new CredistMenu(panel.Find("Credits Menu"));
 
         clickManager = GameObject.Find("Click Manager").GetComponent<AudioSource>();
 
@@ -30,15 +34,19 @@ public class MenuManager : MonoBehaviour
         }
 
         firstMenu.playButton.onClick.AddListener(()=> ButtonFunction(ShowPlayerMenu));
+        firstMenu.infoButton.onClick.AddListener(() => ButtonFunction(ShowCreditMenu));
         playersMenu.returnButton.onClick.AddListener(()=> ButtonFunction(ShowFirstMenu));
+        credistMenu.returnButton.onClick.AddListener(() => ButtonFunction(ShowFirstMenu));
 
-
+        credistMenu.madeText.text = mainMenuText.creditsBody;
+        credistMenu.andText.text = mainMenuText.creditsSecondBody;
     }
 
     void HideAllMenus()
     {
         firstMenu.gameObject.SetActive(false);
         playersMenu.gameObject.SetActive(false);
+        credistMenu.gameObject.SetActive(false);
     }
 
     void ShowFirstMenu()
@@ -51,6 +59,12 @@ public class MenuManager : MonoBehaviour
     {
         HideAllMenus();
         playersMenu.gameObject.SetActive(true);
+    }
+
+    void ShowCreditMenu()
+    {
+        HideAllMenus();
+        credistMenu.gameObject.SetActive(true);
     }
 
     void ButtonFunction(UnityEngine.Events.UnityAction action)
@@ -101,10 +115,29 @@ class PlayersMenu
     }
 }
 
+class CredistMenu
+{
+    public GameObject gameObject;
+    public Button returnButton;
+    public Text madeText;
+    public Text andText;
+
+    public CredistMenu(Transform panel)
+    {
+        gameObject = panel.gameObject;
+        var creditPanel = panel.Find("Credits Panel");
+        returnButton = creditPanel.GetComponentInChildren<Button>();
+        madeText = creditPanel.Find("Made Text").GetComponent<Text>();
+        andText = creditPanel.Find("And Text").GetComponent<Text>();
+
+        gameObject.SetActive(false);
+    }
+}
+
 public class MainMenuText
 {
-    public string creditText;
     public string creditsBody;
+    public string creditsSecondBody;
     public string howBody;
     public string numberOfPlayerText;
     public string selectColorText;
