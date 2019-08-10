@@ -23,13 +23,10 @@ public class MenuManager : MonoBehaviour
 
         clickManager = GameObject.Find("Click Manager").GetComponent<AudioSource>();
 
-        firstMenu.playButton.GetComponentInChildren<Text>().text = mainMenuText.playText;
-        firstMenu.howButton.GetComponentInChildren<Text>().text = mainMenuText.howText;
-
         playersMenu.howManyPlayerText.text = mainMenuText.numberOfPlayerText;
         for (int i = 0; i < playersMenu.playersButtons.Length; i++)
         {
-            playersMenu.playersButtons[i].GetComponentInChildren<Text>().text = $"{i + 2} {mainMenuText.playerName}";
+            playersMenu.playersButtons[i].GetComponentInChildren<Text>().text = $"{i + 2}";
         }
 
         firstMenu.playButton.onClick.AddListener(()=> ButtonFunction(ShowPlayerMenu));
@@ -106,12 +103,9 @@ class PlayersMenu
 
 public class MainMenuText
 {
-    public string playText;
-    public string howText;
     public string creditText;
     public string creditsBody;
     public string howBody;
     public string numberOfPlayerText;
-    public string playerName;
     public string selectColorText;
 }

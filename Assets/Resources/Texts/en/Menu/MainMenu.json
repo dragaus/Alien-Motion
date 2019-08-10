@@ -1,10 +1,7 @@
 {
-    "playText" : "PLAY",
-    "howText": "HOW TO PLAY",
     "creditText": "CREDITS",
     "creditsBody": "MADE BY\nFRANCISCO C. C. ROVIRA\nMARIA ELENA HERNANDEZ PAYAN",
     "howBody": "MOVE YOUR CHARACTER, BREAK THE BARRELS, FIND THE CUPCAKE, AND TRAP OTHER ALIENS, THE LAST ALIEN STANDING WIN",
-    "numberOfPlayerText": "HOW MANY PLAYERS WILL PLAY?",
-    "playerName": "PLAYERS",
+    "numberOfPlayerText": "HOW MANY PLAYERS?",
     "selectColorText": "SELECT YOUR COLOR" 
 }
