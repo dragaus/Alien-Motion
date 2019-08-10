@@ -24,6 +24,7 @@ public class Spaceship : MonoBehaviour
 
         if (Random.Range(0, 2) == 1)
         {
+            animator.Play("RotateInverse");
             posToGo = new Vector2(posA.position.x, Random.Range(-maxYValue, maxYValue));
 
             transform.position = new Vector2(posB.position.x, Random.Range(-maxYValue, maxYValue));
@@ -32,6 +33,7 @@ public class Spaceship : MonoBehaviour
         }
         else
         {
+            animator.Play("Rotate");
             posToGo = new Vector2(posB.position.x, Random.Range(-maxYValue, maxYValue));
 
             transform.position = new Vector2(posA.position.x, Random.Range(-maxYValue, maxYValue));
