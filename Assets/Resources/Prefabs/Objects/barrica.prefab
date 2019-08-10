@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6969313781319984674}
   - component: {fileID: 6969313781319984675}
   - component: {fileID: 6969313781319984673}
+  - component: {fileID: 4467778276261558220}
   m_Layer: 0
   m_Name: barrica
   m_TagString: Untagged
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 77eb5a5c04f99a54c8eee9cc3c85bad0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c03cea46e2530d04fbb147c244b3c38d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -96,18 +97,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0050195456, y: -0.010913134}
+  m_Offset: {x: -0.0050195456, y: 0.01565731}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.96, y: 1.28}
+    oldSize: {x: 1.4628571, y: 1.0971428}
     newSize: {x: 7.68, y: 10.24}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8555081, y: 1.0344634}
+  m_Size: {x: 0.8555081, y: 0.9730296}
   m_EdgeRadius: 0
 --- !u!61 &6969313781319984674
 BoxCollider2D:
@@ -122,18 +123,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00689435, y: -0.0137832165}
+  m_Offset: {x: 0.00689435, y: 0.015657306}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.96, y: 1.28}
+    oldSize: {x: 1.4628571, y: 1.0971428}
     newSize: {x: 7.68, y: 10.24}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1668315, y: 1.0319107}
+  m_Size: {x: 1.1668315, y: 0.9730296}
   m_EdgeRadius: 0
 --- !u!50 &6969313781319984675
 Rigidbody2D:
@@ -168,3 +169,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb2dfdc70c0dcc44ade7eb5e321d899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4467778276261558220
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6969313781319984687}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3066b90f07e035042b738aaaa9a1d585, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

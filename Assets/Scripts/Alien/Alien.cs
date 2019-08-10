@@ -12,7 +12,7 @@ public class Alien : MonoBehaviour
     Breakable breakable;
 
     const float normalSpeed = 4f;
-    const float panqueSpeed = 5f;
+    const float panqueSpeed = 4.5f;
 
     float speed;
     float timeOfPanqueMode;
