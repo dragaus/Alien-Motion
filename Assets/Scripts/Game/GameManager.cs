@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
 
     List<Alien> aliens = new List<Alien>();
 
+    public int numberOfPlayersWithKeyboard = 0;
+    public int numberOfPlayersWithJoystick = 0;
+
     int aliensAlive;
     string winText;
 
@@ -130,7 +133,7 @@ public class GameManager : MonoBehaviour
             var positionToStart = spawnPositions[pos];
             var alien = Instantiate(Resources.Load<GameObject>(alienObjectPath),positionToStart).GetComponent<Alien>();
             int x = i;
-            alien.SetAlienInfo(x);
+            alien.SetAlienInfo(x, this);
             aliens.Add(alien);
             spawnPositions.Remove(positionToStart);
         }

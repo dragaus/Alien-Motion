@@ -31,10 +31,13 @@ public class Alien : MonoBehaviour
     bool isAlive = true;
     bool isInPanqueMode = false;
 
+    string xAxis;
+    string yAxis;
+    string hitAxis;
+
     // Start is called before the first frame update
     void Start()
     {
-        manager = FindObjectOfType<GameManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
@@ -49,12 +52,12 @@ public class Alien : MonoBehaviour
     {
         PanqueMode();
 
-        if (Input.GetAxis($"Fire{playerNumber}") > 0)
+        if (Input.GetAxis(hitAxis) > 0)
         {
             Hit();
         }
 
-        Move(Input.GetAxis($"Horizontal{playerNumber}"), Input.GetAxis($"Vertical{playerNumber}"));
+        Move(Input.GetAxis(xAxis), Input.GetAxis(yAxis));
     }
 
     /// <summary>
@@ -92,8 +95,9 @@ public class Alien : MonoBehaviour
     /// Call at spawning time to set all the info related to the alien
     /// </summary>
     /// <param name="numberOfAlien"></param>
-    public void SetAlienInfo(int numberOfAlien)
+    public void SetAlienInfo(int numberOfAlien, GameManager gameManager)
     {
+        manager = gameManager;
         playerNumber = numberOfAlien;
         ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[GamePreferences.playersColors[numberOfAlien]]}", out Color colorAlien);
         if (spriteRenderer == null)
@@ -101,6 +105,20 @@ public class Alien : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
         spriteRenderer.color = colorAlien;
+        if (PlayerPrefs.GetInt(Keys.playerControllers[numberOfAlien]) == 0)
+        {
+            xAxis = $"Horizontal{manager.numberOfPlayersWithKeyboard}";
+            yAxis = $"Vertical{manager.numberOfPlayersWithKeyboard}";
+            hitAxis = $"Fire{manager.numberOfPlayersWithKeyboard}";
+            manager.numberOfPlayersWithKeyboard++;
+        }
+        else
+        {
+            xAxis = $"ControllerX{manager.numberOfPlayersWithJoystick}";
+            yAxis = $"ControllerY{manager.numberOfPlayersWithJoystick}";
+            hitAxis = $"ControllerA{manager.numberOfPlayersWithJoystick}";
+            manager.numberOfPlayersWithJoystick++;
+        }
     }
 
     /// <summary>

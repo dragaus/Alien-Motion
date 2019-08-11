@@ -56,6 +56,7 @@ public class ConfigurationManager : MonoBehaviour
         {
             var x = i;
             inputMethod[x].onValueChanged.AddListener(delegate { ButtonFunction(() => PlayerPrefs.SetInt(Keys.playerControllers[x], (int)inputMethod[x].value)); });
+            inputMethod[x].value = PlayerPrefs.GetInt(Keys.playerControllers[x]);
         }
 
         SetTexts();
