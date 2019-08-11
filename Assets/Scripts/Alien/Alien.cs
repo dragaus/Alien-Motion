@@ -9,6 +9,8 @@ public class Alien : MonoBehaviour
     BoxCollider2D boxCollider;
     Animator animator;
 
+    AudioSource audioSource;
+
     Breakable breakable;
 
     const float normalSpeed = 4f;
@@ -36,6 +38,7 @@ public class Alien : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         speed = normalSpeed;
         originalColor = spriteRenderer.color;
@@ -153,6 +156,7 @@ public class Alien : MonoBehaviour
         boxCollider.enabled = false;
         spriteRenderer.sortingOrder = 2;
         animator.Play("Cry");
+        PlaySound(manager.hurtSound);
     }
 
 
@@ -166,6 +170,7 @@ public class Alien : MonoBehaviour
         {
             isAlive = false;
             animator.Play("Dance");
+            PlaySound(manager.yeahSound);
             return true;
         }
         return false;
@@ -224,6 +229,7 @@ public class Alien : MonoBehaviour
         timeOfPanqueMode = manager.timeOfPanqueMode;
         manager.FindPanqueRoutine();
         Destroy(panqueToEat);
+        PlaySound(manager.gotSound);
     }
 
     /// <summary>
@@ -235,6 +241,12 @@ public class Alien : MonoBehaviour
         isInPanqueMode = false;
         spriteRenderer.color = originalColor;
         manager.SetPanqueLocation();
+    }
+
+    void PlaySound(AudioClip audio)
+    {
+        audioSource.clip = audio;
+        audioSource.Play();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

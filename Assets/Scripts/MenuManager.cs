@@ -11,6 +11,8 @@ public class MenuManager : MonoBehaviour
     CredistMenu credistMenu;
     ColorMenu colorMenu;
 
+    MusicManager musicManager;
+
     AudioSource clickManager;
 
     public MainMenuText mainMenuText;
@@ -19,7 +21,6 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPrefs.SetString(Keys.languageKey, "en");
         mainMenuText = JsonUtility.FromJson<MainMenuText>(TextAssetLoader.GetCorrectTextAsset(textDirection).text);
 
         var panel = GameObject.Find("Canvas").transform;
@@ -43,6 +44,7 @@ public class MenuManager : MonoBehaviour
             int x = i + 2;
             playersMenu.playersButtons[i].onClick.AddListener(() => ButtonFunction(()=> ShowColorMenu(x)));
         }
+        firstMenu.configButton.onClick.AddListener(() => ButtonFunction(() => SceneManager.LoadScene("Configuration")));
         playersMenu.returnButton.onClick.AddListener(()=> ButtonFunction(ShowFirstMenu));
         credistMenu.returnButton.onClick.AddListener(() => ButtonFunction(ShowFirstMenu));
         credistMenu.malenyButton.onClick.AddListener(() => Application.OpenURL("https://www.linkedin.com/in/elena-hernández/"));
@@ -56,6 +58,9 @@ public class MenuManager : MonoBehaviour
 
         credistMenu.madeText.text = mainMenuText.creditsBody;
         credistMenu.andText.text = mainMenuText.creditsSecondBody;
+
+        musicManager = FindObjectOfType<MusicManager>();
+        musicManager.PlayNewClip(musicManager.menuMusic);
     }
 
     void HideAllMenus()
@@ -90,7 +95,7 @@ public class MenuManager : MonoBehaviour
         GamePreferences.playersColors.Add(colorValue);
         if (GamePreferences.setPlayers == GamePreferences.numberOfPlayers)
         {
-            Loader.SceneToLoad = "Game";
+            Loader.SceneToLoad = "Game_0";
             SceneManager.LoadScene("Loader");
         }
         else
@@ -144,6 +149,7 @@ class FirstMenu
     public Button playButton;
     public Button howButton;
     public Button infoButton;
+    public Button configButton;
 
     public FirstMenu(Transform panel)
     {
@@ -151,6 +157,7 @@ class FirstMenu
         playButton = panel.Find("PlayButton").GetComponent<Button>();
         howButton = panel.Find("How Button").GetComponent<Button>();
         infoButton = panel.Find("CreditsButton").GetComponent<Button>();
+        configButton = panel.Find("ConfigButton").GetComponent<Button>();
 
         gameObject.SetActive(true);
     }

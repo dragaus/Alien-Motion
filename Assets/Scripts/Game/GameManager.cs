@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     GameMenu gameMenu;
 
     MusicManager musicManager;
+    AudioSource audioSource;
 
     GameObject barricaModel;
     GameObject panqueModel;
@@ -30,11 +32,17 @@ public class GameManager : MonoBehaviour
     public float timeOfPanqueMode = 5f;
     public List<Color> possibleColors;
 
+    public AudioClip hurtSound;
+    public AudioClip gotSound;
+    public AudioClip yeahSound;
+
     // Start is called before the first frame update
     void Start()
     {
         gameMenu = new GameMenu(GameObject.Find("Canvas").transform);
         winText = TextAssetLoader.GetCorrectTextAsset("Game/Game").text;
+        gameMenu.otherGameButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("Game_0")));
+        gameMenu.homeButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("MainMenu")));
 
         barricaModel = Resources.Load<GameObject>($"{prefabObjectPath}barrica");
         panqueModel = Resources.Load<GameObject>($"{prefabObjectPath}panque");
@@ -44,17 +52,25 @@ public class GameManager : MonoBehaviour
         borderManager = GameObject.Find("Border Manager").transform;
 
         musicManager = FindObjectOfType<MusicManager>();
-        musicManager.PlayGameMusic();
+        musicManager.PlayNewClip(musicManager.gameMusic);
+
+        audioSource = GetComponent<AudioSource>();
 
         SetColors();
         SetAliens();
         SetPanqueLocation();
     }
 
-    // Update is called once per frame
-    void Update()
+    void ChangeScene(string sceneName)
     {
+        Loader.SceneToLoad = sceneName;
+        SceneManager.LoadScene("Loader");
+    }
 
+    void ButtonFunction(UnityEngine.Events.UnityAction action)
+    {
+        audioSource.Play();
+        action();
     }
 
     public void SetColors()
@@ -140,6 +156,7 @@ public class GameManager : MonoBehaviour
                 panqueSetInPlace.gameObject.SetActive(false);
             }
         }
+        musicManager.audioSource.pitch = 1f;
     }
 
 
@@ -155,6 +172,7 @@ public class GameManager : MonoBehaviour
 
         barricasSetInPlaced.Clear();
         panqueSetInPlace = null;
+        musicManager.audioSource.pitch = 1.30f;
     }
 
     /// <summary>
@@ -181,7 +199,8 @@ public class GameManager : MonoBehaviour
 
     public void ShowResults(int winnerNumber)
     {
-        gameMenu.gameObject.SetActive(true);
+        musicManager.audioSource.pitch = 1f;
+        gameMenu.resultMenu.gameObject.SetActive(true);
         gameMenu.resultText.text = string.Format(winText, winnerNumber + 1);
         ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[GamePreferences.playersColors[winnerNumber]]}", out Color c);
         gameMenu.resultText.color = c;
@@ -191,13 +210,30 @@ public class GameManager : MonoBehaviour
 class GameMenu
 {
     public GameObject gameObject;
+
+    public Transform resultMenu;
     public Text resultText;
+    public Button otherGameButton;
+    public Button homeButton;
+
+    public Button pauseButton;
+
+    public Transform pauseMenu;
 
     public GameMenu(Transform panel)
     {
         gameObject = panel.gameObject;
-        resultText = panel.Find("Tittle Text").GetComponent<Text>();
 
-        gameObject.SetActive(false);
+        resultMenu = panel.Find("Result Menu");
+        resultText = resultMenu.Find("Tittle Text").GetComponent<Text>();
+        otherGameButton = resultMenu.Find("PlayAginButton").GetComponent<Button>();
+        homeButton = resultMenu.Find("HomeButton").GetComponent<Button>();
+
+        pauseButton = panel.Find("Pause Button").GetComponent<Button>();
+
+        pauseMenu = panel.Find("Pause Menu");
+
+        resultMenu.gameObject.SetActive(false);
+        pauseMenu.gameObject.SetActive(false);
     }
 }

@@ -27,9 +27,12 @@ public class MusicManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayGameMusic()
+    public void PlayNewClip(AudioClip clip)
     {
-        audioSource.clip = gameMusic;
-        audioSource.Play();
+        if (audioSource.clip != clip)
+        {
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
     }
 }

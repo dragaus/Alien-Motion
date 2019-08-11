@@ -7,11 +7,13 @@ public class Breakable : MonoBehaviour
 
     Animator animator;
     BoxCollider2D[] colliders;
+    AudioSource audioSource;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         colliders = GetComponents<BoxCollider2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -25,6 +27,7 @@ public class Breakable : MonoBehaviour
             transform.GetChild(0).SetParent(null);
         }
         animator.Play("Open");
+        audioSource.Play();
         for (int i = 0; i < colliders.Length; i++)
         {
             colliders[i].enabled = false;
