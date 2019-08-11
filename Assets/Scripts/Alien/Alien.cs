@@ -65,6 +65,12 @@ public class Alien : MonoBehaviour
     public void SetAlienInfo(int numberOfAlien)
     {
         playerNumber = numberOfAlien;
+        ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[GamePreferences.playersColors[numberOfAlien]]}", out Color colorAlien);
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        spriteRenderer.color = colorAlien;
     }
 
     public int GetAlienId()
