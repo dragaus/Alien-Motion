@@ -416,7 +416,7 @@ Font:
       y: 0
       width: 45
       height: -60
-    advance: 35
+    advance: 25
     flipped: 0
   - serializedVersion: 2
     index: 90
