@@ -16,7 +16,10 @@ public class Alien : MonoBehaviour
 
     float speed;
     float timeOfPanqueMode;
+    float timeToChangeColor;
+    const float changeColorInSeconds = 0.1f;
 
+    int colorIndex = 0;
     int playerNumber = 0;
 
     Color originalColor;
@@ -41,18 +44,7 @@ public class Alien : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //We need to now if its in panque mode
-        if (isInPanqueMode)
-        {
-            //Chaneg the color of the alien to show the panque mode
-            spriteRenderer.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-
-            timeOfPanqueMode -= Time.deltaTime;
-            if (timeOfPanqueMode <= 0)
-            {
-                ExitPanqueMode();
-            }
-        }
+        PanqueMode();
 
         if (Input.GetAxis($"Fire{playerNumber}") > 0)
         {
@@ -62,6 +54,41 @@ public class Alien : MonoBehaviour
         Move(Input.GetAxis($"Horizontal{playerNumber}"), Input.GetAxis($"Vertical{playerNumber}"));
     }
 
+    /// <summary>
+    /// Its used when the alien get a panque and start the persuit of other players
+    /// </summary>
+    public void PanqueMode()
+    {
+        if (isInPanqueMode)
+        {
+            //This change the color of the player to give a visual representation of the panque mode
+            timeToChangeColor -= Time.deltaTime;
+            if (timeToChangeColor <= 0)
+            {
+                colorIndex++;
+                if (colorIndex >= manager.possibleColors.Count)
+                {
+                    colorIndex = 0;
+                }
+                //Chaneg the color of the alien to show the panque mode
+                spriteRenderer.color = manager.possibleColors[colorIndex];
+
+                timeToChangeColor = changeColorInSeconds;
+            }
+
+            //This is used to control the time the player will be on panque mode
+            timeOfPanqueMode -= Time.deltaTime;
+            if (timeOfPanqueMode <= 0)
+            {
+                ExitPanqueMode();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Call at spawning time to set all the info related to the alien
+    /// </summary>
+    /// <param name="numberOfAlien"></param>
     public void SetAlienInfo(int numberOfAlien)
     {
         playerNumber = numberOfAlien;
@@ -73,6 +100,10 @@ public class Alien : MonoBehaviour
         spriteRenderer.color = colorAlien;
     }
 
+    /// <summary>
+    /// Use to get the id of the alien and hace record of it
+    /// </summary>
+    /// <returns></returns>
     public int GetAlienId()
     {
         return playerNumber;
@@ -128,14 +159,16 @@ public class Alien : MonoBehaviour
     /// <summary>
     /// Call at the end of the Game to set results
     /// </summary>
-    public void SetResult()
+    public bool IsWinner()
     {
         //We check if the alien is alive and by that the winner
         if (isAlive)
         {
             isAlive = false;
             animator.Play("Dance");
+            return true;
         }
+        return false;
     }
 
     /// <summary>

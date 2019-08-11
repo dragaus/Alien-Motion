@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     const string prefabObjectPath = "Prefabs/Objects/";
     const string alienObjectPath = "Prefabs/Alien/Alien";
+
+    GameMenu gameMenu;
+
+    MusicManager musicManager;
 
     GameObject barricaModel;
     GameObject panqueModel;
@@ -15,22 +20,33 @@ public class GameManager : MonoBehaviour
 
     Transform spawnManager;
     Transform alienManager;
+    Transform borderManager;
 
     List<Alien> aliens = new List<Alien>();
 
     int aliensAlive;
+    string winText;
 
     public float timeOfPanqueMode = 5f;
+    public List<Color> possibleColors;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameMenu = new GameMenu(GameObject.Find("Canvas").transform);
+        winText = TextAssetLoader.GetCorrectTextAsset("Game/Game").text;
+
         barricaModel = Resources.Load<GameObject>($"{prefabObjectPath}barrica");
         panqueModel = Resources.Load<GameObject>($"{prefabObjectPath}panque");
 
         spawnManager = GameObject.Find("Spawn Manager").transform;
         alienManager = GameObject.Find("Alien Manager").transform;
+        borderManager = GameObject.Find("Border Manager").transform;
 
+        musicManager = FindObjectOfType<MusicManager>();
+        musicManager.PlayGameMusic();
+
+        SetColors();
         SetAliens();
         SetPanqueLocation();
     }
@@ -39,6 +55,46 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void SetColors()
+    {
+        List<int> colorsToSet = new List<int>();
+        for (int i = 0; i < Keys.plastilineColors.Length; i++)
+        {
+            int x = i;
+            colorsToSet.Add(x);
+        }
+
+        foreach (int c in GamePreferences.playersColors)
+        {
+            colorsToSet.Remove(c);
+        }
+
+        int random = Random.Range(0, colorsToSet.Count);
+        random = colorsToSet[random];
+
+        for (int i = 0; i < Keys.plastilineColors.Length; i++)
+        {
+            if (i != random)
+            {
+                ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[i]}", out Color c);
+                possibleColors.Add(c);
+            }
+            else
+            {
+                SetBorders(i);
+            }
+        }
+    }
+
+    public void SetBorders(int colorNum)
+    {
+        ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[colorNum]}", out Color c);
+        for (int i = 0; i < borderManager.childCount; i++)
+        {
+            borderManager.GetChild(i).GetComponent<SpriteRenderer>().color = c;
+        }
     }
 
     /// <summary>
@@ -52,7 +108,7 @@ public class GameManager : MonoBehaviour
             spawnPositions.Add(alienManager.GetChild(i));
         }
 
-        for (int i = 0; i < GamePreferences.numberOfPleyers; i++)
+        for (int i = 0; i < GamePreferences.numberOfPlayers; i++)
         {
             int pos = Random.Range(0, spawnPositions.Count);
             var positionToStart = spawnPositions[pos];
@@ -80,7 +136,8 @@ public class GameManager : MonoBehaviour
             barricasSetInPlaced.Add(barrelToAdd);
             if (panquePos == i)
             {
-                panqueSetInPlace = Instantiate(panqueModel, spawnManager.GetChild(i));
+                panqueSetInPlace = Instantiate(panqueModel, barrelToAdd.transform);
+                panqueSetInPlace.gameObject.SetActive(false);
             }
         }
     }
@@ -114,8 +171,33 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < aliens.Count; i++)
             {
-                aliens[i].SetResult();
+                if (aliens[i].IsWinner())
+                {
+                    ShowResults(aliens[i].GetAlienId());
+                }
             }
         }
+    }
+
+    public void ShowResults(int winnerNumber)
+    {
+        gameMenu.gameObject.SetActive(true);
+        gameMenu.resultText.text = string.Format(winText, winnerNumber + 1);
+        ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[GamePreferences.playersColors[winnerNumber]]}", out Color c);
+        gameMenu.resultText.color = c;
+    }
+}
+
+class GameMenu
+{
+    public GameObject gameObject;
+    public Text resultText;
+
+    public GameMenu(Transform panel)
+    {
+        gameObject = panel.gameObject;
+        resultText = panel.Find("Tittle Text").GetComponent<Text>();
+
+        gameObject.SetActive(false);
     }
 }

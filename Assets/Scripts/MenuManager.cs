@@ -88,7 +88,7 @@ public class MenuManager : MonoBehaviour
     {
         GamePreferences.setPlayers++;
         GamePreferences.playersColors.Add(colorValue);
-        if (GamePreferences.setPlayers == GamePreferences.numberOfPleyers)
+        if (GamePreferences.setPlayers == GamePreferences.numberOfPlayers)
         {
             Loader.SceneToLoad = "Game";
             SceneManager.LoadScene("Loader");
@@ -101,6 +101,7 @@ public class MenuManager : MonoBehaviour
 
     void ShowColorMenu()
     {
+        colorMenu.colorText.text = $"{mainMenuText.selectColorText}{GamePreferences.setPlayers + 1}";
         for (int i = 0; i < colorMenu.colorButton.Length; i++)
         {
             if (GamePreferences.playersColors.Contains(i))
@@ -116,7 +117,7 @@ public class MenuManager : MonoBehaviour
 
     void ShowColorMenu(int numberOfPlayers)
     {
-        GamePreferences.numberOfPleyers = numberOfPlayers;
+        GamePreferences.numberOfPlayers = numberOfPlayers;
         GamePreferences.setPlayers = 0;
         GamePreferences.playersColors.Clear();
         HideAllMenus();
@@ -211,6 +212,8 @@ class ColorMenu
     public ColorMenu(Transform panel)
     {
         gameObject = panel.gameObject;
+
+        colorText = panel.Find("Color Text").GetComponent<Text>();
 
         colorButton = new Button[6];
         for (int i = 0; i < colorButton.Length; i++)
