@@ -46,6 +46,9 @@ public class GameManager : MonoBehaviour
         winText = TextAssetLoader.GetCorrectTextAsset("Game/Game").text;
         gameMenu.otherGameButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("Game_0")));
         gameMenu.homeButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("MainMenu")));
+        gameMenu.pauseButton.onClick.AddListener(() => ButtonFunction(ShowPauseMenu));
+        gameMenu.resumeButton.onClick.AddListener(() => ButtonFunction(HidePauseMenu));
+        gameMenu.goHomeButton.onClick.AddListener(() => ButtonFunction(GoHome));
 
         barricaModel = Resources.Load<GameObject>($"{prefabObjectPath}barrica");
         panqueModel = Resources.Load<GameObject>($"{prefabObjectPath}panque");
@@ -200,10 +203,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ShowPauseMenu()
+    {
+        gameMenu.pauseButton.gameObject.SetActive(false);
+        gameMenu.pauseMenu.gameObject.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void HidePauseMenu()
+    {
+        gameMenu.pauseButton.gameObject.SetActive(true);
+        gameMenu.pauseMenu.gameObject.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void GoHome()
+    {
+        Time.timeScale = 1;
+        Loader.SceneToLoad = "MainMenu";
+        SceneManager.LoadScene("Loader");
+    }
+
     public void ShowResults(int winnerNumber)
     {
         musicManager.audioSource.pitch = 1f;
         gameMenu.resultMenu.gameObject.SetActive(true);
+        gameMenu.pauseButton.gameObject.SetActive(false);
         gameMenu.resultText.text = string.Format(winText, winnerNumber + 1);
         ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[GamePreferences.playersColors[winnerNumber]]}", out Color c);
         gameMenu.resultText.color = c;
@@ -222,6 +247,8 @@ class GameMenu
     public Button pauseButton;
 
     public Transform pauseMenu;
+    public Button resumeButton;
+    public Button goHomeButton;
 
     public GameMenu(Transform panel)
     {
@@ -235,6 +262,9 @@ class GameMenu
         pauseButton = panel.Find("Pause Button").GetComponent<Button>();
 
         pauseMenu = panel.Find("Pause Menu");
+        var pausePanel = pauseMenu.Find("Pause Panel");
+        resumeButton = pausePanel.Find("Resume Button").GetComponent<Button>();
+        goHomeButton = pausePanel.Find("Home Button").GetComponent<Button>();
 
         resultMenu.gameObject.SetActive(false);
         pauseMenu.gameObject.SetActive(false);
