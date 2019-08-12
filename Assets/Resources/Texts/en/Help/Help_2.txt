@@ -1,0 +1,7 @@
+Put yourself near to the barrel and hit it with your A button in your joystick or with the keyboard.
+
+Keyboard options:
+Keyboard 1 : left Ctrl.
+keyboard 2 : right Ctrl.
+Keyboard 3 : right Shift.
+keyboard 4 : left Shift. 

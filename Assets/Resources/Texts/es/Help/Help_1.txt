@@ -1,0 +1,9 @@
+Mueve tu alien con un joystick o con tu teclado
+
+Ajusta las opciones en el menú de configuración
+
+Opciones de teclado:
+Teclado 1 : flechas.
+Teclado 2 : awsd.
+Teclado 3 : hujk.
+Teclado 4 : numpad 1523. 

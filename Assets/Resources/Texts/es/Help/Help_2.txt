@@ -1,0 +1,7 @@
+Acércate a un barril y presiona el botón A de tu joystick o usa tu teclado.
+
+Opciones de teclado:
+Teclado 1 : Ctrl izquierdo.
+Teclado 2 : Ctrl derecho.
+Teclado 3 : Shift derecho.
+Teclado 4 : Shift izquierdo.

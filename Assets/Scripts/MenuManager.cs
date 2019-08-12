@@ -45,6 +45,7 @@ public class MenuManager : MonoBehaviour
             playersMenu.playersButtons[i].onClick.AddListener(() => ButtonFunction(()=> ShowColorMenu(x)));
         }
         firstMenu.configButton.onClick.AddListener(() => ButtonFunction(() => SceneManager.LoadScene("Configuration")));
+        firstMenu.howButton.onClick.AddListener(() => ButtonFunction(() => SceneManager.LoadScene("Help")));
         playersMenu.returnButton.onClick.AddListener(()=> ButtonFunction(ShowFirstMenu));
         credistMenu.returnButton.onClick.AddListener(() => ButtonFunction(ShowFirstMenu));
         credistMenu.malenyButton.onClick.AddListener(() => Application.OpenURL("https://www.linkedin.com/in/elena-hernández/"));

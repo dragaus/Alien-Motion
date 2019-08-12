@@ -1,0 +1,9 @@
+Move the alien with your joystick or your keyboard.
+
+Set this options in configuration menu
+
+Keyboard options:
+Keyboard 1 : arrows.
+keyboard 2 : awsd.
+Keyboard 3 : hujk.
+keyboard 4 : numpad 1523. 
