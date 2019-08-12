@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         gameMenu = new GameMenu(GameObject.Find("Canvas").transform);
         winText = TextAssetLoader.GetCorrectTextAsset("Game/Game").text;
-        gameMenu.otherGameButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("Game_0")));
+        gameMenu.otherGameButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("Game")));
         gameMenu.homeButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("MainMenu")));
         gameMenu.pauseButton.onClick.AddListener(() => ButtonFunction(ShowPauseMenu));
         gameMenu.resumeButton.onClick.AddListener(() => ButtonFunction(HidePauseMenu));
@@ -169,13 +169,14 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// this should be call when the panque mode is over
     /// </summary>
-    public void FindPanqueRoutine()
+    public void EndPanqueRoutine()
     {
         for (int i = 0; i < barricasSetInPlaced.Count; i++)
         {
             Destroy(barricasSetInPlaced[i]);
         }
 
+        timeOfPanqueMode++;
         barricasSetInPlaced.Clear();
         panqueSetInPlace = null;
         musicManager.audioSource.pitch = 1.30f;

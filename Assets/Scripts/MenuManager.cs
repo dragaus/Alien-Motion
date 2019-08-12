@@ -96,7 +96,7 @@ public class MenuManager : MonoBehaviour
         GamePreferences.playersColors.Add(colorValue);
         if (GamePreferences.setPlayers == GamePreferences.numberOfPlayers)
         {
-            Loader.SceneToLoad = "Game_0";
+            Loader.SceneToLoad = "Game";
             SceneManager.LoadScene("Loader");
         }
         else

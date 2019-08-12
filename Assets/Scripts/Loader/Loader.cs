@@ -12,6 +12,10 @@ public class Loader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (SceneToLoad == "Game")
+        {
+            SceneToLoad += $"_{Random.Range(0, Keys.numOfLevels)}";
+        }
         StartCoroutine(LoadNewScene());
     }
 

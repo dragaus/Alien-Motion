@@ -7,14 +7,11 @@ using UnityEngine.SceneManagement;
 public class SplashLoader : MonoBehaviour
 {
     GameObject barricaGamesSplash;
-    GameObject ccdSplash;
     // Start is called before the first frame update
     void Start()
     {
         barricaGamesSplash = transform.Find("Barrrica Splash").gameObject;
-        ccdSplash = transform.Find("CCD Splash").gameObject;
         barricaGamesSplash.SetActive(false);
-        ccdSplash.SetActive(false);
 
         StartCoroutine(SplashCorutine());
     }
@@ -28,17 +25,6 @@ public class SplashLoader : MonoBehaviour
         {
             yield return null;
         }
-
-        barricaGamesSplash.SetActive(false);
-        ccdSplash.gameObject.SetActive(true);
-
-        var video = ccdSplash.GetComponent<VideoPlayer>();
-        video.Play();
-        while (video.isPlaying)
-        {
-            yield return null;
-        }
-
         Loader.SceneToLoad = "MainMenu";
         SceneManager.LoadScene("Loader");
     }

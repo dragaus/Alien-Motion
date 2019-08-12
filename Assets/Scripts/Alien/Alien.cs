@@ -245,7 +245,7 @@ public class Alien : MonoBehaviour
         speed = panqueSpeed;
         isInPanqueMode = true;
         timeOfPanqueMode = manager.timeOfPanqueMode;
-        manager.FindPanqueRoutine();
+        manager.EndPanqueRoutine();
         Destroy(panqueToEat);
         PlaySound(manager.gotSound);
     }
