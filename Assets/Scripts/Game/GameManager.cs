@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameMenu = new GameMenu(GameObject.Find("Canvas").transform);
+        gameMenu = new GameMenu(GameObject.Find("Game Menu").transform);
         winText = TextAssetLoader.GetCorrectTextAsset("Game/Game").text;
         gameMenu.otherGameButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("Game")));
         gameMenu.homeButton.onClick.AddListener(() => ButtonFunction(() => ChangeScene("MainMenu")));
@@ -115,7 +115,16 @@ public class GameManager : MonoBehaviour
         ColorUtility.TryParseHtmlString($"#{Keys.plastilineColors[colorNum]}", out Color c);
         for (int i = 0; i < borderManager.childCount; i++)
         {
-            borderManager.GetChild(i).GetComponent<SpriteRenderer>().color = c;
+            var renderer = borderManager.GetChild(i).GetComponent<SpriteRenderer>();
+            renderer.color = c;
+            var border = borderManager.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
+            border.size = renderer.size;
+        }
+
+        var limitManager = GameObject.Find("LimitManager").transform;
+        for (int i = 0; i < limitManager.childCount; i++)
+        {
+            limitManager.GetChild(i).GetComponent<SpriteRenderer>().color = c;
         }
     }
 
