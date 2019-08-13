@@ -11,6 +11,8 @@ public class Alien : MonoBehaviour
 
     AudioSource audioSource;
 
+    Alien alienTouch;
+
     Breakable breakable;
 
     const float normalSpeed = 4f;
@@ -248,6 +250,10 @@ public class Alien : MonoBehaviour
         manager.EndPanqueRoutine();
         Destroy(panqueToEat);
         PlaySound(manager.gotSound);
+        if (alienTouch != null)
+        {
+            manager.AlienIsDown(alienTouch.GetAlienId());
+        }
     }
 
     /// <summary>
@@ -269,9 +275,24 @@ public class Alien : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Alien>() && isInPanqueMode)
+        if (collision.gameObject.GetComponent<Alien>())
         {
-            manager.AlienIsDown(collision.gameObject.GetComponent<Alien>().GetAlienId());
+            if (isInPanqueMode)
+            {
+                manager.AlienIsDown(collision.gameObject.GetComponent<Alien>().GetAlienId());
+            }
+            else
+            {
+                alienTouch = collision.gameObject.GetComponent<Alien>();
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<Alien>())
+        {
+            alienTouch = null;
         }
     }
 
