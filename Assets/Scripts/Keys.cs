@@ -10,5 +10,5 @@ public class Keys
 
     public static string[] plastilineColors = { "FF3939", "3965FF", "79F557", "FBFF1E", "E836FF", "FF4295" };
 
-    public static int numOfLevels = 15;
+    public static int numOfLevels = 21;
 }

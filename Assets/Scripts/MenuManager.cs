@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,9 @@ public class MenuManager : MonoBehaviour
 
     public MainMenuText mainMenuText;
     const string textDirection = "Menu/MainMenu";
+
+    [DllImport("__Internal")]
+    private static extern void openUrl(string link);
 
     // Start is called before the first frame update
     void Start()
@@ -48,8 +52,8 @@ public class MenuManager : MonoBehaviour
         firstMenu.howButton.onClick.AddListener(() => ButtonFunction(() => SceneManager.LoadScene("Help")));
         playersMenu.returnButton.onClick.AddListener(()=> ButtonFunction(ShowFirstMenu));
         credistMenu.returnButton.onClick.AddListener(() => ButtonFunction(ShowFirstMenu));
-        credistMenu.malenyButton.onClick.AddListener(() => Application.OpenURL("https://www.linkedin.com/in/elena-hernández/"));
-        credistMenu.pacoButton.onClick.AddListener(() => Application.OpenURL("https://www.linkedin.com/in/francisco-rovira/"));
+        credistMenu.malenyButton.onClick.AddListener(() => GoToPorfolio("https://www.linkedin.com/in/elena-hernández/"));
+        credistMenu.pacoButton.onClick.AddListener(() => GoToPorfolio("https://www.linkedin.com/in/francisco-rovira/"));
         for (int i = 0; i < colorMenu.colorButton.Length; i++)
         {
             int x = i;
@@ -64,6 +68,14 @@ public class MenuManager : MonoBehaviour
         musicManager.PlayNewClip(musicManager.menuMusic);
     }
 
+    void GoToPorfolio(string linkToGo)
+    {
+#if UNITY_WEBGL
+        openUrl(linkToGo);
+#else
+        Application.OpenURL(linkToGo);
+#endif
+    }
     void HideAllMenus()
     {
         firstMenu.gameObject.SetActive(false);
